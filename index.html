@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head><title>Motion Storage</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/dark.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/icons.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/base.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/styles.css">
+<script src="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/_ds_bundle.js"></script>
+<style>html,body{height:100%;margin:0;background:#101828}a{color:#9bacf2;text-decoration:none}a:hover{color:#6575bf}input[type=number]::-webkit-inner-spin-button{opacity:.4}</style>
+</helmet>
+<div class="dark-theme" style="display:flex;height:100vh;min-height:0;font-family:var(--font-sans);background:var(--color-elevation-surface-default);color:var(--color-text-default);font-size:14px;line-height:20px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Sidebar" items="{{ navItems }}" value="devices" logo-src="assets/logo-mark-alt.svg" hint-size="65px,100%"></x-import>
+<main style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.HeaderBar" breadcrumbs="{{ crumbs }}" hint-size="100%,49px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Save" type="primary" disabled="{{ v.invalid }}" onClick="{{ on.save }}" hint-size="64px,32px"></x-import>
+</x-import>
+<div style="flex:1;min-height:0;display:flex">
+<nav style="width:220px;min-width:220px;border-right:1px solid var(--color-border-default);padding:16px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;background:var(--color-elevation-surface-subtlest)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="10">
+<div style="display:flex;align-items:center;height:40px;padding:0 12px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:{{ t.w }};color:{{ t.c }};background:{{ t.bg }}" style-hover="background:var(--color-background-neutral-subtle)">{{ t.label }}</div>
+</sc-for>
+</nav>
+<div style="flex:1;min-width:0;overflow-y:auto">
+<div style="display:flex;flex-wrap:wrap;gap:40px;padding:32px 40px 80px;align-items:flex-start">
+
+<form style="flex:1 1 520px;max-width:580px;min-width:0;display:flex;flex-direction:column;gap:24px" onSubmit="{{ on.noop }}">
+<div data-screen-label="General storage" style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<h2 style="margin:0;font-size:20px;line-height:28px;font-weight:600;color:var(--color-text-bold)">Storage</h2>
+<div style="font-size:13px;color:var(--color-text-subtle)">Set how long this camera's footage is kept on the Core</div>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ s.storage }}" onChange="{{ on.storage }}" hint-size="34px,24px"></x-import>
+</div>
+<div style="height:1px;background:var(--color-border-default)"></div>
+
+<div style="display:flex;flex-direction:column;gap:24px;opacity:{{ v.dim }};pointer-events:{{ v.pe }}">
+
+<section data-screen-label="Recording stream" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<h4 style="margin:0;font-size:16px;line-height:24px;font-weight:600">Recording stream</h4>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">One setting for all retention types: General, Motion and Events</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:12px">
+<sc-for list="{{ streams }}" as="o" hint-placeholder-count="2">
+<div onClick="{{ o.pick }}" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
+<span style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;min-width:20px;margin-top:2px;border-radius:50%;border:2px solid {{ o.ring }};background:{{ o.fill }};box-sizing:border-box">
+<sc-if value="{{ o.sel }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-elevation-surface-default)"></span></sc-if>
+</span>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px"><span style="font-size:14px;font-weight:600">{{ o.label }}</span><span style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ o.info }}</span></div>
+<span style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ o.desc }}</span>
+</div>
+</div>
+</sc-for>
+</div>
+<div style="display:flex;align-items:center;gap:8px;margin-top:4px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ s.encoding }}" onChange="{{ on.encoding }}" hint-size="34px,24px"></x-import>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">Encoding</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">When off, the camera stream is stored as-is (passthrough)</div>
+</div>
+</div>
+<sc-if value="{{ s.encoding }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:16px;padding-inline-start:42px">
+<div style="width:1px;align-self:stretch;background:var(--color-border-default)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1">Codec</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ s.codec }}" options="{{ codecOptions }}" onChange="{{ on.codec }}" style="width:210px;min-width:210px" hint-size="210px,40px"></x-import>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1">Resolution</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ s.res }}" options="{{ resOptions }}" onChange="{{ on.res }}" style="width:210px;min-width:210px" hint-size="210px,40px"></x-import>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1">Bitrate (kbps)</div>
+<input type="number" min="64" step="64" value="{{ s.bitrate }}" onChange="{{ on.bitrate }}" style="width:210px;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+</div>
+<div style="display:flex;justify-content:flex-end">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Reset to defaults" type="default" iconClass="ui-icon-reset" onClick="{{ on.resetEnc }}" hint-size="150px,32px"></x-import>
+</div>
+</div>
+</div>
+</sc-if>
+</section>
+
+<div style="height:1px;background:var(--color-border-default)"></div>
+
+<section data-screen-label="Retention" style="display:flex;flex-direction:column;gap:20px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<h4 style="margin:0;font-size:16px;line-height:24px;font-weight:600">Retention</h4>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--color-text-subtle)"><span class="ui-icon-info" style="font-size:14px;color:var(--color-icon-default)"></span>Videos might be erased earlier if storage space is limited</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px;min-height:40px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">General</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">All recorded footage within the storage schedule</div>
+<sc-if value="{{ v.eg.warn }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:{{ v.eg.color }}"><span class="{{ v.eg.icon }}" style="font-size:14px"></span>{{ v.eg.text }}</div></sc-if>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ s.general }}" options="{{ generalOptions }}" onChange="{{ on.general }}" style="width:160px;min-width:160px" hint-size="160px,40px"></x-import>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px;min-height:40px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">Motion</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Keep footage with motion after General footage is deleted</div>
+<sc-if value="{{ v.em.warn }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:{{ v.em.color }}"><span class="{{ v.em.icon }}" style="font-size:14px"></span>{{ v.em.text }}</div></sc-if>
+<sc-if value="{{ v.errMotion }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--color-text-alert-default)"><span class="ui-icon-warning" style="font-size:14px"></span>{{ v.errMotion }}</div></sc-if>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ v.motionVal }}" options="{{ retentionOptions }}" onChange="{{ on.motion }}" style="width:160px;min-width:160px" hint-size="160px,40px"></x-import>
+</div>
+<div style="display:flex;gap:16px;padding-inline-start:16px;opacity:{{ v.motionSubDim }};pointer-events:{{ v.motionSubPe }}">
+<div style="width:1px;align-self:stretch;background:var(--color-border-default)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div>Motion threshold</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle);max-width:260px">Footage is kept when motion in a part of the frame is above this level. Lower keeps more</div>
+</div>
+<div style="position:relative;width:160px;flex-shrink:0">
+<input type="number" min="1" max="100" value="{{ s.threshold }}" onChange="{{ on.threshold }}" style="width:100%;height:40px;padding:8px 42px 8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+<span style="position:absolute;right:14px;top:10px;color:var(--color-text-subtle);pointer-events:none">%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px;min-height:40px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">Events</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Keep footage with events after Motion footage is deleted</div>
+<sc-if value="{{ v.ei.warn }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:{{ v.ei.color }}"><span class="{{ v.ei.icon }}" style="font-size:14px"></span>{{ v.ei.text }}</div></sc-if>
+<sc-if value="{{ v.errInt }}" hint-placeholder-val="{{ false }}"><div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--color-text-alert-default)"><span class="ui-icon-warning" style="font-size:14px"></span>{{ v.errInt }}</div></sc-if>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ v.eventsVal }}" options="{{ retentionOptions }}" onChange="{{ on.events }}" style="width:160px;min-width:160px" hint-size="160px,40px"></x-import>
+</div>
+<div style="display:flex;gap:16px;padding-inline-start:16px;opacity:{{ v.eventsSubDim }};pointer-events:{{ v.eventsSubPe }}">
+<div style="width:1px;align-self:stretch;background:var(--color-border-default)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ raw.intOn }}" onChange="{{ on.intOn }}" hint-size="34px,24px"></x-import>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div>Internal events</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Triggered by Lumana cameras</div>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:8px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ raw.extOn }}" onChange="{{ on.extOn }}" hint-size="34px,24px"></x-import>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div>External events</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Triggered through integrations</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div>Storage schedule</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Applies to General, Motion and Events recording.</div>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ s.schedule }}" options="{{ scheduleOptions }}" onChange="{{ on.schedule }}" style="width:160px;min-width:160px" hint-size="160px,40px"></x-import>
+</div>
+
+</section>
+
+<div style="height:1px;background:var(--color-border-default)"></div>
+
+<section data-screen-label="Smart storage" style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:8px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ s.smart }}" onChange="{{ on.smart }}" hint-size="34px,24px"></x-import>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">Smart storage</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Save alert videos in high resolution from the main stream, regardless of the recording stream settings above.</div>
+</div>
+</div>
+<sc-if value="{{ s.smart }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;gap:16px;padding-inline-start:42px">
+<div style="width:1px;align-self:stretch;background:var(--color-border-default)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:12px">
+<div style="display:flex;align-items:center;gap:8px;font-size:14px;color:var(--color-text-default)"><span class="ui-icon-storage" style="font-size:16px;color:var(--color-icon-default)"></span>{{ v.smartStatus }}</div>
+<div style="display:flex;gap:8px;font-size:12px;line-height:16px;color:var(--color-text-subtle)"><span class="ui-icon-info" style="font-size:14px;color:var(--color-icon-default)"></span>Retention is not guaranteed – smart storage clips are deleted when space is needed.</div>
+</div>
+</div>
+</sc-if>
+<sc-if value="{{ v.showPrePost }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-direction:column;gap:16px">
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div>Pre-event duration</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Shared by Motion, Events and Smart storage</div>
+</div>
+<div style="position:relative;width:210px">
+<input type="number" min="0" max="30" value="{{ s.pre }}" onChange="{{ on.pre }}" style="width:100%;height:40px;padding:8px 48px 8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+<span style="position:absolute;right:14px;top:10px;color:var(--color-text-subtle);pointer-events:none">sec</span>
+</div>
+</div>
+<div style="display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0">Post-event duration</div>
+<div style="position:relative;width:210px">
+<input type="number" min="0" max="30" value="{{ s.post }}" onChange="{{ on.post }}" style="width:100%;height:40px;padding:8px 48px 8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+<span style="position:absolute;right:14px;top:10px;color:var(--color-text-subtle);pointer-events:none">sec</span>
+</div>
+</div>
+</div>
+</sc-if>
+</section>
+
+<div style="height:1px;background:var(--color-border-default)"></div>
+
+<section data-screen-label="Backup storage" style="display:flex;align-items:center;gap:8px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ s.backup }}" onChange="{{ on.backup }}" hint-size="34px,24px"></x-import>
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:14px;font-weight:600">Backup storage</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">Uses the same retention settings.</div>
+</div>
+</section>
+</div>
+</form>
+
+<aside data-screen-label="Retention and resources estimate" style="flex:0 1 380px;min-width:300px;position:sticky;top:32px;display:flex;flex-direction:column;border:1px solid var(--color-border-default);border-radius:4px;background:var(--color-elevation-surface-subtlest);opacity:{{ v.dim }}">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px;border-bottom:1px solid var(--color-border-default)">
+<div style="font-size:14px;font-weight:600">Retention &amp; resources estimate</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Badge" tone="{{ v.basisTone }}" hint-size="120px,20px">{{ v.basis }}</x-import>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:12px;padding:16px;border-bottom:1px solid var(--color-border-default)">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">This camera</div>
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">Recording</span><span>{{ v.recGb }} GB/day</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">Smart storage</span><span>{{ v.smartGb }}</span></div>
+<div style="display:grid;grid-template-columns:1fr 70px 80px;gap:0;margin-top:4px;border:1px solid var(--color-border-default);border-radius:4px;overflow:hidden">
+<div style="padding:6px 12px;font-size:12px;font-weight:500;color:var(--color-text-subtle);background:var(--background-table-header)">Retention</div>
+<div style="padding:6px 8px;font-size:12px;font-weight:500;color:var(--color-text-subtle);background:var(--background-table-header);text-align:right">Target</div>
+<div style="padding:6px 12px;font-size:12px;font-weight:500;color:var(--color-text-subtle);background:var(--background-table-header);text-align:right">Estimated</div>
+<sc-for list="{{ v.tierRows }}" as="r" hint-placeholder-count="4">
+<div style="padding:8px 12px;border-top:1px solid var(--color-border-default)">{{ r.name }}</div>
+<div style="padding:8px 8px;border-top:1px solid var(--color-border-default);text-align:right;color:var(--color-text-subtle)">{{ r.target }}</div>
+<div style="padding:8px 12px;border-top:1px solid var(--color-border-default);text-align:right;color:{{ r.color }};display:flex;justify-content:flex-end;align-items:center;gap:4px"><span class="{{ r.icon }}" style="font-size:12px"></span>{{ r.est }}</div>
+</sc-for>
+</div>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border-bottom:1px solid var(--color-border-default)">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Core-wide storage · WH3-Core-01</div>
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">Total disk capacity</span><span>{{ v.capTB }} TB</span></div>
+<div style="display:flex;flex-direction:column;gap:6px">
+<div style="display:flex;justify-content:space-between;font-size:12px;line-height:16px"><span style="color:var(--color-text-subtle)">Required vs. available, all cameras</span><span style="color:{{ v.reqColor }}">{{ v.reqTB }} / {{ v.capTB }} TB</span></div>
+<div style="height:8px;border-radius:4px;background:var(--color-background-neutral-subtle-100700);overflow:hidden"><div style="height:100%;width:{{ v.reqW }};background:{{ v.reqColor }};border-radius:4px;transition:width .3s"></div></div>
+</div>
+<sc-if value="{{ v.cut }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:4px;background:var(--color-background-warning-default)">
+<div style="display:flex;align-items:center;gap:6px;color:var(--color-icon-warning)"><span class="ui-icon-warning" style="font-size:14px"></span>General retention at {{ v.pct }}% of target</div>
+<div style="display:flex;justify-content:space-between;gap:8px;font-size:12px;line-height:16px;color:var(--color-text-default)"><span>{{ v.othersBelow }} other cameras below retention target</span><a href="#" onClick="{{ on.noop }}">View cameras</a></div>
+</div>
+</sc-if>
+</div>
+
+<div style="display:flex;flex-direction:column;gap:10px;padding:16px;border-bottom:1px solid var(--color-border-default);position:relative">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Core compute</div>
+<div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;line-height:16px">
+<span style="display:flex;align-items:center;gap:6px;color:var(--color-text-subtle)">Encoding load: <span style="color:{{ v.loadColor }}">{{ v.load }}% of Core capacity</span></span>
+<span class="ui-icon-info" onMouseEnter="{{ on.tipOn }}" onMouseLeave="{{ on.tipOff }}" style="font-size:14px;color:var(--color-icon-default);cursor:default"></span>
+</div>
+<div style="height:8px;border-radius:4px;background:var(--color-background-neutral-subtle-100700);overflow:hidden"><div style="height:100%;width:{{ v.loadW }};background:{{ v.loadColor }};border-radius:4px;transition:width .3s"></div></div>
+<sc-if value="{{ v.highLoad }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--color-icon-warning)"><span class="ui-icon-warning" style="font-size:14px"></span>Above 80%. Live view and analytics may slow down on this Core.</div>
+</sc-if>
+<sc-if value="{{ s.tip }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;right:12px;top:44px;z-index:5;width:250px;padding:12px;border-radius:4px;background:var(--color-elevation-surface-overlay-default);border:1px solid var(--color-border-default);box-shadow:var(--shadow-md);display:flex;flex-direction:column;gap:6px;font-size:12px;line-height:16px">
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">This camera</span><span>{{ v.camLoad }}%</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">Other cameras</span><span>{{ v.baseLoad }}%</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:var(--color-text-subtle)">Pre-event buffer memory</span><span>{{ v.bufMb }} MB</span></div>
+</div>
+</sc-if>
+</div>
+
+<div style="padding:16px;font-size:12px;line-height:16px;color:var(--color-text-subtle);text-wrap:pretty">Calculated from stream bitrate and the last 7 days of motion and event activity. When space runs short, General retention is reduced proportionally across all cameras on this Core, before Motion or Events. Also applies to backup storage.</div>
+</aside>
+
+</div>
+</div>
+</div>
+</main>
+
+<sc-if value="{{ v.dlgReduce }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:var(--color-backdrop-dialog)">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Modal" title="Reduce retention" width="{{ 520 }}" compact="{{ true }}" onClose="{{ on.closeDlg }}" footer="{{ footerReduce }}" hint-size="520px,300px">
+<div style="display:flex;flex-direction:column;gap:12px;font-size:14px;line-height:20px">
+<sc-for list="{{ v.reductions }}" as="r" hint-placeholder-count="1">
+<div style="display:flex;gap:8px"><span class="ui-icon-warning" style="font-size:16px;color:var(--color-icon-warning);margin-top:2px"></span><span>Footage older than {{ r.days }} days in {{ r.name }} will be permanently deleted at the next cleanup.</span></div>
+</sc-for>
+</div>
+</x-import>
+</div>
+</sc-if>
+
+<sc-if value="{{ v.dlgSave }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:var(--color-backdrop-dialog)">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Modal" title="Retention targets can't be met" width="{{ 560 }}" compact="{{ true }}" onClose="{{ on.closeDlg }}" footer="{{ footerSave }}" hint-size="560px,420px">
+<div style="display:flex;flex-direction:column;gap:20px;font-size:14px;line-height:20px">
+<sc-if value="{{ v.cut }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:4px;background:var(--color-background-warning-default);color:var(--color-icon-warning)"><span class="ui-icon-warning" style="font-size:16px"></span>General retention on this Core will be reduced to {{ v.pct }}% of target</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;font-weight:500;color:var(--color-text-subtle)">This camera</div>
+<sc-for list="{{ v.unmet }}" as="u" hint-placeholder-count="1">
+<div style="display:flex;justify-content:space-between"><span>{{ u.name }}</span><span>{{ u.target }} → <span style="color:var(--color-icon-warning)">{{ u.est }} days</span></span></div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;font-weight:500;color:var(--color-text-subtle)">Other cameras on this Core · General retention</div>
+<sc-for list="{{ v.others }}" as="o" hint-placeholder-count="4">
+<div style="display:flex;justify-content:space-between"><span>{{ o.name }}</span><span style="color:var(--color-text-subtle)">{{ o.from }} → {{ o.to }} days</span></div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ v.highLoad }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:8px;padding:10px 12px;border-radius:4px;background:var(--color-background-warning-default);color:var(--color-icon-warning)"><span class="ui-icon-warning" style="font-size:16px"></span>Encoding load will reach {{ v.load }}% of Core capacity</div>
+</sc-if>
+</div>
+</x-import>
+</div>
+</sc-if>
+
+<sc-if value="{{ s.toast }}" hint-placeholder-val="{{ false }}">
+<div style="position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:8px;padding:12px 16px;border-radius:4px;background:var(--color-elevation-surface-overlay-default);border:1px solid var(--color-border-default);box-shadow:inset 3px 0 0 var(--color-text-success-default),var(--shadow-md)"><span class="ui-icon-checkmark" style="color:var(--color-text-success-default)"></span>Storage settings saved</div>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;motionOnly&quot;,&quot;internalOnly&quot;,&quot;externalOnly&quot;,&quot;none&quot;,&quot;encoding&quot;,&quot;smartEmpty&quot;,&quot;notMet&quot;,&quot;newCamera&quot;,&quot;highLoad&quot;,&quot;dialogReduce&quot;,&quot;dialogSave&quot;]}}">
+const DETECTED = {
+  main: { codec: 'H.265', res: '2560×1440', kbps: 4096 },
+  sub: { codec: 'H.264', res: '640×360', kbps: 512 },
+};
+const OTHERS = [
+  { name: 'Lobby', days: 30 }, { name: 'Parking entrance', days: 45 }, { name: 'Loading dock 2', days: 30 },
+  { name: 'Reception', days: 14 }, { name: 'Back office', days: 30 },
+];
+const BASE = {
+  storage: true, schedule: 'all', stream: 'main', encoding: false, codec: 'h265', res: 'native', bitrate: '4096',
+  general: '30', motionOn: true, motion: '60', threshold: '20', intOn: true, intDays: '90', extOn: true, extDays: '90',
+  eventsOn: true, pre: '10', post: '5', smart: true, smartEmpty: false, backup: false, newCam: false,
+  coreCapTB: 25, coreBaseLoad: 45, dialog: null, tip: false, toast: false,
+};
+const SCENARIOS = {
+  default: {},
+  motionOnly: { intOn: false, extOn: false },
+  internalOnly: { motionOn: false, extOn: false },
+  externalOnly: { motionOn: false, intOn: false },
+  none: { motionOn: false, eventsOn: false, smart: false },
+  encoding: { encoding: true, codec: 'h264', res: '1080p', bitrate: '2048' },
+  smartEmpty: { smartEmpty: true },
+  notMet: { coreCapTB: 18 },
+  newCamera: { newCam: true, smartEmpty: true },
+  highLoad: { encoding: true, codec: 'av1', res: 'native', bitrate: '4096', coreBaseLoad: 72 },
+  dialogReduce: { __current: { motion: '30', extOn: false }, dialog: 'reduce' },
+  dialogSave: { coreCapTB: 18, encoding: true, codec: 'av1', res: 'native', bitrate: '4096', coreBaseLoad: 72, dialog: 'save' },
+};
+const TIERS = ['general', 'motion', 'int', 'ext'];
+
+class Component extends DCLogic {
+  state = this.preset(this.props.scenario || 'default');
+
+  preset(name) {
+    const sc = SCENARIOS[name] || {};
+    const { __current, ...rest } = sc;
+    const st = { ...BASE, ...rest };
+    this.saved = { ...st };
+    return { ...st, ...(__current || {}) };
+  }
+  componentDidUpdate(prev) {
+    if (prev.scenario !== this.props.scenario) this.setState(this.preset(this.props.scenario || 'default'));
+  }
+
+  calc(s) {
+    const n = (k) => Math.max(0, parseInt(s[k]) || 0);
+    const det = DETECTED[s.stream];
+    const kbps = s.encoding ? n('bitrate') : det.kbps;
+    const sched = { all: 1, weekdays: 5 / 7, business: 50 / 168 }[s.schedule];
+    const r = kbps * 0.0108;
+    const thr = n('threshold');
+    const mf = s.newCam ? 0.3 : Math.min(0.6, Math.max(0.05, 0.55 - thr * 0.0125));
+    const ef = s.intOn && s.extOn ? 0.08 : s.intOn ? 0.06 : s.extOn ? 0.04 : 0;
+    const Dg = n('general'), Dm = s.motionOn ? n('motion') : 0;
+    const De = Math.max(s.intOn ? n('intDays') : 0, s.extOn ? n('extDays') : 0);
+    const genGB = r * sched * Dg;
+    const restGB = (s.motionOn ? r * sched * mf * Math.max(0, Dm - Dg) : 0) + r * sched * ef * Math.max(0, De - Math.max(Dg, Dm));
+    const othersGen = 18.5, othersRest = 3.4;
+    const cap = s.coreCapTB;
+    const req = othersGen + othersRest + genGB / 1000 + restGB / 1000;
+    const f = req <= cap ? 1 : Math.max(0, (cap - othersRest - restGB / 1000) / (othersGen + genGB / 1000));
+    const resF = { native: s.stream === 'main' ? 1.6 : 0.2, '1080p': 1, '720p': 0.55, '480p': 0.3, '360p': 0.2, '240p': 0.12 }[s.res];
+    const camLoad = s.encoding ? Math.round({ h264: 4, h265: 7, av1: 12 }[s.codec] * resF) : 0;
+    const load = s.coreBaseLoad + camLoad;
+    return { n, det, kbps, sched, r, Dg, Dm, De, f, req, cap, camLoad, load };
+  }
+
+  validate(s, c) {
+    const out = {};
+    if (s.motionOn && c.Dm < c.Dg) out.motion = `Motion retention must be at least the General retention (${c.Dg} days)`;
+    const base = s.motionOn ? c.Dm : c.Dg, baseName = s.motionOn ? 'Motion' : 'General';
+    if ((s.intOn || s.extOn) && c.n('intDays') < base) out.int = `Events retention must be at least the ${baseName} retention (${base} days)`;
+    if (false) out.ext = `External events retention must be at least the ${baseName} retention (${base} days)`;
+    return out;
+  }
+
+  reductions(s) {
+    const b = this.eff(this.saved), n = (o, k) => parseInt(o[k]) || 0, out = [];
+    if (n(s, 'general') < n(b, 'general')) out.push({ name: 'General', days: n(s, 'general') });
+    const mFallback = n(s, 'general');
+    if (b.motionOn && (!s.motionOn || n(s, 'motion') < n(b, 'motion'))) out.push({ name: 'Motion', days: s.motionOn ? n(s, 'motion') : mFallback });
+    const eFallback = s.motionOn ? n(s, 'motion') : n(s, 'general');
+    if (b.intOn && (!s.intOn || n(s, 'intDays') < n(b, 'intDays'))) out.push({ name: 'Internal events', days: s.intOn ? n(s, 'intDays') : eFallback });
+    if (b.extOn && (!s.extOn || n(s, 'extDays') < n(b, 'extDays'))) out.push({ name: 'External events', days: s.extOn ? n(s, 'extDays') : eFallback });
+    return out;
+  }
+
+  commit() {
+    this.saved = { ...this.state, dialog: null };
+    this.setState({ dialog: null, toast: true });
+    clearTimeout(this._t);
+    this._t = setTimeout(() => this.setState({ toast: false }), 2500);
+  }
+  afterReduce() {
+    const c = this.calc(this.eff(this.state));
+    if (c.f < 1 || c.load > 80) this.setState({ dialog: 'save' });
+    else this.commit();
+  }
+  save() {
+    const s = this.eff(this.state), c = this.calc(s);
+    if (Object.keys(this.validate(s, c)).length) return;
+    if (this.reductions(s).length) return this.setState({ dialog: 'reduce' });
+    this.afterReduce();
+  }
+
+  eff(o) { return { ...o, intOn: o.eventsOn && o.intOn, extOn: o.eventsOn && o.extOn }; }
+  renderVals() {
+    const raw = this.state, s = this.eff(raw), c = this.calc(s), err = this.validate(s, c), self = this;
+    const R = React.createElement, NS = window.LumanaDesignSystem_1b2e75 || {}, B = NS.Button;
+    const set = (k, fn) => (x) => this.setState({ [k]: fn ? fn(x) : x });
+    const ev = (e) => e.target.value;
+    const on = {
+      save: () => this.save(), noop: (e) => e && e.preventDefault && e.preventDefault(),
+      storage: set('storage'), schedule: set('schedule'), encoding: set('encoding'), codec: set('codec'), res: set('res'),
+      bitrate: set('bitrate', ev), general: set('general'), motion: (x) => this.setState(x === 'none' ? { motionOn: false } : { motionOn: true, motion: x }),
+      events: (x) => this.setState(x === 'none' ? { eventsOn: false } : { eventsOn: true, intDays: x, extDays: x }),
+      threshold: set('threshold', ev), intOn: set('intOn'), intDays: (e) => this.setState({ intDays: e.target.value, extDays: e.target.value }), extOn: set('extOn'),
+      pre: set('pre', ev), post: set('post', ev), smart: set('smart'), backup: set('backup'),
+      resetEnc: () => this.setState({ codec: 'h265', res: 'native', bitrate: String(DETECTED[s.stream].kbps) }),
+      tipOn: () => this.setState({ tip: true }), tipOff: () => this.setState({ tip: false }),
+      closeDlg: () => this.setState({ dialog: null }),
+    };
+    const OK = 'var(--color-text-success-default)', WARN = 'var(--color-icon-warning)', BAD = 'var(--color-text-alert-default)';
+    const est = (target, estd) => {
+      const met = estd >= target;
+      return { met, warn: !met, est: estd, color: met ? OK : WARN, icon: met ? 'ui-icon-checkmark' : 'ui-icon-warning',
+        text: met ? `Estimated ${estd} days · target met` : `Estimated ${estd} days · below target` };
+    };
+    const gEst = Math.floor(c.Dg * c.f);
+    const eg = est(c.Dg, gEst), em = est(c.Dm, c.Dm), ei = est(c.n('intDays'), c.n('intDays')), ee = est(c.n('extDays'), c.n('extDays'));
+
+    const max = Math.max(c.Dg, c.Dm, c.De, 1);
+    const pct = (d) => (Math.min(d, max) / max * 100).toFixed(2) + '%';
+    const bands = [{ label: 'General', days: c.Dg, w: pct(c.Dg), top: '0px', h: '54px', c: 'var(--color-background-neutral-default-200700)' }];
+    if (s.motionOn) bands.push({ label: 'Motion', days: c.Dm, w: pct(c.Dm), top: '8px', h: '38px', c: 'var(--color-background-accent-primary-subtle)' });
+    const both = s.intOn && s.extOn;
+    if (s.intOn) bands.push({ label: 'Internal events', days: c.n('intDays'), w: pct(c.n('intDays')), top: '16px', h: both ? '11px' : '22px', c: 'var(--color-background-accent-primary-default)' });
+    if (s.extOn) bands.push({ label: 'External events', days: c.n('extDays'), w: pct(c.n('extDays')), top: both ? '27px' : '16px', h: both ? '11px' : '22px', c: 'var(--color-icon-primary-bold)' });
+    const tickDays = [...new Set(bands.map((b) => b.days))].filter((d) => d > 0).sort((a, b) => a - b);
+    const ticks = tickDays.filter((d, i) => i === tickDays.length - 1 || (tickDays[i + 1] - d) / max > 0.08).map((d) => ({ x: pct(d), label: `${d} days` }));
+
+    const row = (name, on_, target, e) => on_
+      ? { name, target: `${target} d`, est: `${e.est} d`, color: e.color, icon: e.icon }
+      : { name, target: '—', est: 'Off', color: 'var(--color-text-subtlest)', icon: '' };
+    const tierRows = [row('General', true, c.Dg, eg), row('Motion', s.motionOn, c.Dm, em), row('Events', s.intOn || s.extOn, c.n('intDays'), ei)];
+    const cut = c.f < 1;
+    const pctCut = Math.floor(c.f * 100);
+    const smartOn = s.smart && s.storage;
+    const reductions = this.reductions(s);
+
+    const footerReduce = B ? R(React.Fragment, null,
+      R(B, { key: 'c', text: 'Cancel', type: 'default', onClick: on.closeDlg }),
+      R(B, { key: 'r', text: 'Reduce retention', type: 'danger', onClick: () => this.afterReduce() })) : null;
+    const footerSave = B ? R(React.Fragment, null,
+      R('span', { key: 'h', style: { marginRight: 'auto', alignSelf: 'center', fontSize: 12, lineHeight: '16px', color: 'var(--color-text-subtle)', maxWidth: 220 } }, 'Lower bitrate, use sub stream, or shorten General retention'),
+      R(B, { key: 'a', text: 'Adjust settings', type: 'default', onClick: on.closeDlg }),
+      R(B, { key: 's', text: 'Save anyway', type: 'primary', onClick: () => this.commit() })) : null;
+
+    return {
+      s, raw, on, footerReduce, footerSave,
+      generalOptions: ['30', '60', '90', '365'].map((d) => ({ value: d, label: `${d} days` })),
+      retentionOptions: [{ value: 'none', label: 'None' }, ...['30', '60', '90', '365'].map((d) => ({ value: d, label: `${d} days` }))],
+      crumbs: ['Devices', 'Warehouse 3', 'Dock 4 — East', 'Storage'],
+      navItems: [
+        { value: 'devices', label: 'Devices', icon: 'ui-icon-camera-sidebar' },
+        { value: 'search', label: 'Search', icon: 'ui-icon-search-sidebar' },
+        { value: 'alerts', label: 'Alerts', icon: 'ui-icon-notifications-sidebar' },
+        { value: 'dashboards', label: 'Dashboards', icon: 'ui-icon-dashboard-sidebar' },
+        { value: 'walls', label: 'Walls', icon: 'ui-icon-wall-sidebar' },
+        { value: 'archives', label: 'Archives', icon: 'ui-icon-archive-sidebar' },
+        { value: 'cases', label: 'Cases', icon: 'ui-icon-menu-folder-sidebar' },
+      ],
+      tabs: ['Details', 'Network', 'Video & audio', 'Live view', 'Storage', 'Analytics', 'Privacy', 'PTZ', 'Monitoring', 'Shortcuts'].map((l) => {
+        const a = l === 'Storage';
+        return { label: l, w: a ? 500 : 400, c: a ? 'var(--color-icon-selected)' : 'var(--color-text-default)', bg: a ? 'var(--color-background-accent-primary-subtlest)' : 'transparent' };
+      }),
+      scheduleOptions: [{ value: 'all', label: 'Monday–Sunday' }, { value: 'weekdays', label: 'Monday–Friday' }, { value: 'business', label: 'Business hours' }],
+      codecOptions: [{ value: 'h264', label: 'H.264' }, { value: 'h265', label: 'H.265' }, { value: 'av1', label: 'AV1' }],
+      resOptions: ['native', '1080p', '720p', '480p', '360p', '240p'].map((v) => ({ value: v, label: v === 'native' ? 'Native' : v })),
+      streams: [
+        { v: 'main', label: 'Main stream', desc: 'Full camera resolution. Uses more storage.' },
+        { v: 'sub', label: 'Sub stream', desc: 'Lower resolution. Uses less storage and bandwidth.' },
+      ].map((o) => {
+        const sel = s.stream === o.v;
+        const d = DETECTED[o.v];
+        const resLbl = { native: 'Native', '1080p': '1080p', '720p': '720p', '480p': '480p', '360p': '360p', '240p': '240p' }[s.res];
+        const codecLbl = { h264: 'H.264', h265: 'H.265', av1: 'AV1' }[s.codec];
+        const info = sel && !s.encoding ? `Detected: ${d.codec} · ${d.res} · ${d.kbps.toLocaleString()} kbps avg` : '';
+        if (sel) this._encInfo = s.encoding ? `${codecLbl} · ${s.res === 'native' ? d.res : resLbl} · ${(parseInt(s.bitrate) || 0).toLocaleString()} kbps` : '';
+        return { ...o, sel, info, ring: sel ? 'var(--color-border-button-primary-default)' : 'var(--color-border-input-default)', fill: sel ? 'var(--color-background-selected-selector-active)' : 'transparent',
+          pick: () => this.setState({ stream: o.v, bitrate: String(DETECTED[o.v].kbps) }) };
+      }),
+      v: {
+        invalid: Object.keys(err).length > 0,
+        dim: s.storage ? 1 : 0.32, pe: s.storage ? 'auto' : 'none',
+        encOff: !s.encoding,
+        motionVal: s.motionOn ? String(s.motion) : 'none', eventsVal: raw.eventsOn ? String(s.intDays) : 'none',
+        motionSubDim: s.motionOn ? 1 : 0.5, motionSubPe: s.motionOn ? 'auto' : 'none',
+        eventsSubDim: raw.eventsOn ? 1 : 0.5, eventsSubPe: raw.eventsOn ? 'auto' : 'none',
+        get encInfo() { return self._encInfo || ''; },
+        detected: `${c.det.codec} · ${c.det.res} · ${c.det.kbps.toLocaleString()} kbps avg`,
+        eg, em, ei, ee,
+        errMotion: err.motion || '', errInt: err.int || '', errExt: err.ext || '',
+        bMotion: err.motion ? BAD : 'var(--color-border-input-default)',
+        bInt: err.int ? BAD : 'var(--color-border-input-default)',
+        bExt: err.ext ? BAD : 'var(--color-border-input-default)',
+        anyEvents: s.intOn || s.extOn, bothEvents: both,
+        showPrePost: s.motionOn || s.intOn || s.extOn || s.smart,
+        bands, ticks,
+        smartStatus: s.smartEmpty ? 'No clips saved yet' : 'Oldest saved clip: Oct 2, 2026 (40 days ago)',
+        basis: s.newCam ? 'Estimated from defaults' : 'Last 7 days', basisTone: s.newCam ? 'warning' : 'neutral',
+        recGb: (c.r * c.sched).toFixed(1),
+        smartGb: smartOn ? (s.newCam ? '1.5 GB/day' : '1.8 GB/day') : 'Off',
+        tierRows,
+        capTB: c.cap, reqTB: c.req.toFixed(1),
+        reqW: Math.min(100, (c.req / c.cap) * 100).toFixed(1) + '%',
+        reqColor: cut ? WARN : 'var(--color-icon-primary-default)',
+        cut, pct: pctCut, othersBelow: OTHERS.length,
+        load: c.load, loadW: Math.min(100, c.load) + '%', camLoad: c.camLoad, baseLoad: c.coreBaseLoad,
+        loadColor: c.load > 80 ? WARN : 'var(--color-icon-primary-default)', highLoad: c.load > 80,
+        bufMb: ((c.n('pre') * c.kbps) / 8 / 1000).toFixed(1),
+        dlgReduce: s.dialog === 'reduce' && reductions.length > 0, dlgSave: s.dialog === 'save',
+        reductions,
+        unmet: eg.met ? [] : [{ name: 'General', target: `${c.Dg}`, est: gEst }],
+        others: OTHERS.map((o) => ({ name: o.name, from: o.days, to: Math.floor(o.days * c.f) })),
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
