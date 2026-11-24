@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/dark.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/icons.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/base.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/styles.css">
+<script src="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/_ds_bundle.js"></script>
+<style>html,body{height:100%;margin:0;background:#101828}a{color:#9bacf2;text-decoration:none}a:hover{color:#6575bf}input[type=number]::-webkit-inner-spin-button{opacity:.4}input::placeholder{color:var(--color-text-subtlest)}</style>
+</helmet>
+<div class="dark-theme" style="display:flex;height:100vh;min-height:0;font-family:var(--font-sans);background:var(--color-elevation-surface-default);color:var(--color-text-default);font-size:14px;line-height:20px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Sidebar" items="{{ navItems }}" value="devices" logo-src="assets/logo-mark-alt.svg" hint-size="65px,100%"></x-import>
+<main style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.HeaderBar" breadcrumbs="{{ crumbs }}" hint-size="100%,49px">
+<div style="display:flex;flex-shrink:0;gap:2px;padding:2px;border-radius:4px;background:var(--color-background-neutral-subtle)">
+<a href="index.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-subtle)" style-hover="color:var(--color-text-default)">Camera storage</a>
+<a href="Camera Live View.dc.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-default);background:var(--color-background-neutral-subtle-100700);box-shadow:var(--shadow-sm)">Live view</a>
+<a href="Streaming Profiles.dc.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-subtle)" style-hover="color:var(--color-text-default)">Streaming profiles</a>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Save" type="primary" hint-size="64px,32px"></x-import>
+</x-import>
+<div style="flex:1;min-height:0;display:flex">
+<nav style="width:220px;min-width:220px;border-right:1px solid var(--color-border-default);padding:16px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;background:var(--color-elevation-surface-subtlest)">
+<sc-for list="{{ tabs }}" as="t" hint-placeholder-count="8">
+<a href="{{ t.href }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:{{ t.w }};color:{{ t.c }};background:{{ t.bg }}" style-hover="background:var(--color-background-neutral-subtle)"><span class="{{ t.icon }}" style="font-size:16px;color:{{ t.ic }}"></span><span>{{ t.label }}</span></a>
+</sc-for>
+<div style="height:1px;background:var(--color-border-default);margin:8px 4px"></div>
+<div style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px;border-radius:4px;cursor:pointer;font-size:14px;color:var(--color-text-default)" style-hover="background:var(--color-background-neutral-subtle)"><span class="ui-icon-monitoring" style="font-size:16px;color:var(--icon-default-no-bg)"></span><span>Monitoring</span></div>
+</nav>
+<div style="flex:1;min-width:0;overflow-y:auto">
+<div data-screen-label="Live view" style="max-width:810px;padding:32px 40px 80px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:24px;line-height:32px;font-weight:500">Live view</div>
+<div style="color:var(--color-text-subtle)">Per-profile encoding settings</div>
+</div>
+
+<sc-for list="{{ sections }}" as="sec" hint-placeholder-count="2">
+<section style="display:flex;flex-direction:column;gap:16px;padding-top:{{ sec.padTop }};border-top:{{ sec.divider }}">
+<div style="display:flex;flex-direction:column;gap:4px">
+<div style="font-size:16px;line-height:24px;font-weight:500">{{ sec.title }}</div>
+<sc-if value="{{ sec.desc }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ sec.desc }}</div></sc-if>
+</div>
+<div style="display:flex;gap:4px;border-bottom:1px solid var(--color-border-default)">
+<sc-for list="{{ sec.qTabs }}" as="qt" hint-placeholder-count="3">
+<div onClick="{{ qt.pick }}" style="display:flex;align-items:center;height:44px;padding:0 18px;cursor:pointer;font-weight:500;color:{{ qt.c }};box-shadow:{{ qt.line }};transition:color .3s">{{ qt.label }}</div>
+</sc-for>
+</div>
+<div style="display:flex;flex-direction:column;gap:24px;padding:20px 22px;border-radius:4px;background:var(--color-elevation-surface-subtle)">
+<div style="display:flex;align-items:center;gap:12px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ sec.enc }}" onChange="{{ sec.setEnc }}" hint-size="34px,24px"></x-import>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:2px">
+<div style="font-weight:500">Encoding</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">When off, the camera stream is relayed as-is</div>
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="{{ sec.resetLabel }}" type="default" onClick="{{ sec.reset }}" hint-size="170px,36px"></x-import>
+</div>
+<sc-if value="{{ sec.enc }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;gap:16px;padding-inline-start:42px">
+<div style="width:1px;align-self:stretch;background:var(--color-border-default)"></div>
+<div style="flex:1;min-width:0;display:flex;align-items:center;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div>Streaming profile</div>
+<div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ sec.summary }}</div>
+</div>
+<div ref="{{ sec.ref }}" style="position:relative;width:240px;min-width:240px">
+<div onClick="{{ sec.toggle }}" style="display:flex;align-items:center;gap:8px;height:40px;padding:0 12px 0 16px;box-sizing:border-box;border:1px solid {{ sec.border }};border-radius:4px;background:var(--color-background-input-default);cursor:pointer">
+<span style="flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:{{ sec.labelColor }}">{{ sec.label }}</span>
+<span class="ui-icon-expand-arrow" style="font-size:12px;color:var(--icon-default-no-bg);transform:{{ sec.chev }}"></span>
+</div>
+<sc-if value="{{ sec.open }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:44px;left:0;right:0;z-index:20;display:flex;flex-direction:column;padding:8px 0;border:1px solid var(--color-border-default);border-radius:4px;background:var(--color-elevation-surface-subtle);box-shadow:var(--shadow-md)">
+<div style="padding:0 8px 8px">
+<input value="{{ q }}" onChange="{{ search }}" placeholder="Search streaming profiles..." style="width:100%;height:36px;padding:0 12px;box-sizing:border-box;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-elevation-surface-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+</div>
+<div style="max-height:220px;overflow-y:auto;display:flex;flex-direction:column">
+<sc-for list="{{ sec.items }}" as="o" hint-placeholder-count="4">
+<div onClick="{{ o.pick }}" style="display:flex;flex-direction:column;padding:8px 16px;cursor:pointer;background:{{ o.bg }}" style-hover="background:var(--color-background-neutral-subtle-100700)">
+<span style="font-size:14px;line-height:20px;color:{{ o.c }}">{{ o.name }}</span>
+<span style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ o.meta }}</span>
+</div>
+</sc-for>
+<sc-if value="{{ sec.none }}" hint-placeholder-val="{{ false }}"><div style="padding:8px 16px;font-size:12px;color:var(--color-text-subtle)">Try a different name.</div></sc-if>
+</div>
+<div onClick="{{ sec.create }}" style="display:flex;align-items:center;gap:8px;margin-top:4px;padding:8px 16px;cursor:pointer;color:var(--color-icon-selected)" style-hover="background:var(--color-background-neutral-subtle-100700)"><span class="ui-icon-plus" style="font-size:16px"></span><span>Streaming profile</span></div>
+</div>
+</sc-if>
+</div>
+</div>
+</div>
+</sc-if>
+</div>
+</section>
+</sc-for>
+</div>
+</div>
+</div>
+</main>
+
+<sc-if value="{{ nd.open }}" hint-placeholder-val="{{ false }}">
+<aside data-screen-label="Create streaming profile drawer" style="position:fixed;top:0;right:0;bottom:0;z-index:30;width:480px;max-width:calc(100% - 120px);display:flex;flex-direction:column;background:var(--color-elevation-surface-default);border-left:1px solid var(--color-border-default);box-shadow:var(--shadow-md)">
+<div title="Close" onClick="{{ nd.close }}" style="position:absolute;top:8px;left:-44px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--color-secondary-gray-600);color:var(--color-primary-white);transition:opacity .3s" style-hover="opacity:.85"><span class="ui-icon-close" style="font-size:16px"></span></div>
+<div style="display:flex;align-items:center;flex-shrink:0;height:49px;padding:0 24px;border-bottom:1px solid var(--color-border-default)"><span style="font-size:16px;line-height:24px;font-weight:500">Create streaming profile</span></div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Name</div><input value="{{ nd.d.name }}" onChange="{{ nd.f.name }}" placeholder="Enter profile name" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Codec</div><x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ nd.d.codec }}" options="{{ codecOptions }}" onChange="{{ nd.f.codec }}" style="width:100%" hint-size="100%,40px"></x-import></div>
+<div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Resolution</div><x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ nd.d.res }}" options="{{ resOptions }}" onChange="{{ nd.f.res }}" style="width:100%" hint-size="100%,40px"></x-import></div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Bitrate (kbps)</div><input type="number" min="64" step="64" value="{{ nd.d.bitrate }}" onChange="{{ nd.f.bitrate }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">FPS</div><input type="number" min="1" max="60" step="1" value="{{ nd.d.fps }}" onChange="{{ nd.f.fps }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+</div>
+</div>
+<div style="display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;padding:16px 24px;border-top:1px solid var(--color-border-default)">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Cancel" type="default" size="m" onClick="{{ nd.close }}" hint-size="80px,40px"></x-import>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Create" type="primary" size="m" disabled="{{ nd.invalid }}" onClick="{{ nd.save }}" hint-size="80px,40px"></x-import>
+</div>
+</aside>
+</sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const PROFILES = [
+  { id: 1, name: 'High quality', codec: 'h265', res: 'native', bitrate: 4096, fps: 25 },
+  { id: 2, name: 'Balanced', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 },
+  { id: 3, name: 'Low bandwidth', codec: 'h264', res: '720p', bitrate: 1024, fps: 15 },
+  { id: 4, name: 'Remote site', codec: 'h264', res: '480p', bitrate: 512, fps: 10 },
+  { id: 5, name: 'Mobile', codec: 'h264', res: '360p', bitrate: 384, fps: 10 },
+  { id: 6, name: 'Archive efficient', codec: 'av1', res: '1080p', bitrate: 1536, fps: 15 },
+];
+const CODECS = [{ value: 'h264', label: 'H.264' }, { value: 'h265', label: 'H.265' }, { value: 'av1', label: 'AV1' }];
+const RES = ['native', '1080p', '720p', '480p', '360p', '240p'].map((v) => ({ value: v, label: v === 'native' ? 'Native' : v }));
+const SECTIONS = [
+  { id: 'remote', title: 'Remote live view', desc: '', qs: ['HQ', 'MQ', 'SQ'] },
+  { id: 'local', title: 'Local live view', desc: 'These streaming settings will be used when you watch live footage over a local network', qs: ['HQ', 'MQ'] },
+];
+class Component extends DCLogic {
+  state = {
+    profiles: PROFILES, q: '', open: null, nd: null,
+    tab: { remote: 'HQ', local: 'HQ' },
+    cfg: { 'remote-HQ': { enc: true, profile: 3 } },
+  };
+  refs = { remote: React.createRef(), local: React.createRef() };
+  componentDidMount() {
+    this.onDoc = (e) => { const o = this.state.open; if (o && this.refs[o].current && !this.refs[o].current.contains(e.target)) this.setState({ open: null }); };
+    this.onKey = (e) => { if (e.key === 'Escape') this.setState({ open: null, nd: null }); };
+    document.addEventListener('mousedown', this.onDoc); window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { document.removeEventListener('mousedown', this.onDoc); window.removeEventListener('keydown', this.onKey); }
+  setCfg(key, patch) { this.setState((s) => ({ cfg: { ...s.cfg, [key]: { enc: false, profile: null, ...s.cfg[key], ...patch } } })); }
+  renderVals() {
+    const st = this.state, resL = (r) => (r === 'native' ? 'Native' : r);
+    const codecL = { h264: 'H.264', h265: 'H.265', av1: 'AV1' };
+    const meta = (p) => `${codecL[p.codec]} · ${resL(p.res)} · ${p.bitrate.toLocaleString()} kbps · ${p.fps} fps`;
+    const items = st.profiles.filter((p) => p.name.toLowerCase().includes(st.q.trim().toLowerCase()));
+    const d = st.nd;
+    const setD = (k) => (e) => { const v = e && e.target ? e.target.value : e; this.setState((s) => ({ nd: { ...s.nd, [k]: v } })); };
+    return {
+      navItems: [
+        { value: 'devices', label: 'Devices', icon: 'ui-icon-camera-sidebar' },
+        { value: 'search', label: 'Search', icon: 'ui-icon-search-sidebar' },
+        { value: 'alerts', label: 'Alerts', icon: 'ui-icon-notifications-sidebar' },
+        { value: 'dashboards', label: 'Dashboards', icon: 'ui-icon-dashboard-sidebar' },
+        { value: 'walls', label: 'Walls', icon: 'ui-icon-wall-sidebar' },
+        { value: 'archives', label: 'Archives', icon: 'ui-icon-archive-sidebar' },
+        { value: 'cases', label: 'Cases', icon: 'ui-icon-menu-folder-sidebar' },
+      ],
+      crumbs: ['Devices', 'Warehouse 3', 'Dock 4 — East', 'Live view'],
+      tabs: [['Details', 'ui-icon-info'], ['Live view', 'ui-icon-live', 'Camera Live View.dc.html'], ['Streams', 'ui-icon-stream'], ['Storage', 'ui-icon-storage', 'index.html'], ['Analytics', 'ui-icon-analytics'], ['PTZ', 'ui-icon-ptz'], ['Shortcuts', 'ui-icon-camera-shortcut'], ['Camera API', 'ui-icon-api']].map(([l, icon, href]) => {
+        const a = l === 'Live view';
+        return { label: l, icon, href: href || '#', ic: a ? 'var(--color-icon-selected)' : 'var(--icon-default-no-bg)', w: a ? 500 : 400, c: a ? 'var(--color-icon-selected)' : 'var(--color-text-default)', bg: a ? 'var(--color-background-accent-primary-subtlest)' : 'transparent' };
+      }),
+      q: st.q, search: (e) => this.setState({ q: e.target.value }),
+      codecOptions: CODECS, resOptions: RES,
+      sections: SECTIONS.map((sec, i) => {
+        const qv = st.tab[sec.id], key = `${sec.id}-${qv}`, c = st.cfg[key] || { enc: false, profile: null };
+        const sel = st.profiles.find((p) => p.id === c.profile), open = st.open === sec.id;
+        return {
+          title: sec.title, desc: sec.desc, padTop: i ? '24px' : '0', divider: i ? '1px solid var(--color-border-default)' : 'none',
+          qTabs: sec.qs.map((q) => ({ label: q, pick: () => this.setState((s) => ({ tab: { ...s.tab, [sec.id]: q }, open: null })),
+            c: q === qv ? 'var(--color-icon-primary-default)' : 'var(--color-text-default)',
+            line: q === qv ? 'inset 0 -3px 0 var(--color-border-selected-default)' : 'none' })),
+          enc: !!c.enc, setEnc: (v) => this.setCfg(key, { enc: typeof v === 'boolean' ? v : !c.enc }),
+          resetLabel: `Reset ${qv} to defaults`, reset: () => this.setCfg(key, { enc: false, profile: null }),
+          ref: this.refs[sec.id], open,
+          label: sel ? sel.name : 'Select streaming profile', labelColor: sel ? 'var(--color-text-default)' : 'var(--color-text-subtle)',
+          summary: sel ? meta(sel) : 'Choose a profile from the organization database',
+          border: open ? 'var(--color-border-input-pressed)' : 'var(--color-border-input-default)', chev: open ? 'rotate(180deg)' : 'none',
+          toggle: () => this.setState((s) => ({ open: s.open === sec.id ? null : sec.id, q: '' })),
+          none: items.length === 0,
+          items: items.map((p) => ({ name: p.name, meta: meta(p),
+            pick: () => { this.setCfg(key, { profile: p.id }); this.setState({ open: null, q: '' }); },
+            bg: p.id === c.profile ? 'var(--color-background-neutral-subtle-100700)' : 'transparent',
+            c: p.id === c.profile ? 'var(--color-icon-selected)' : 'var(--color-text-default)' })),
+          create: () => this.setState({ open: null, nd: { key, name: st.q.trim(), codec: 'h264', res: '1080p', bitrate: 2048, fps: 15 } }),
+        };
+      }),
+      nd: {
+        open: !!d, d: d || {}, f: { name: setD('name'), codec: setD('codec'), res: setD('res'), bitrate: setD('bitrate'), fps: setD('fps') },
+        invalid: !(d && d.name.trim() && Number(d.bitrate) > 0 && Number(d.fps) > 0),
+        close: () => this.setState({ nd: null }),
+        save: () => {
+          const { key, ...rest } = d;
+          const p = { ...rest, name: rest.name.trim(), bitrate: Number(rest.bitrate), fps: Number(rest.fps), id: Date.now() };
+          this.setState((s) => ({ profiles: [...s.profiles, p], nd: null, q: '' })); this.setCfg(key, { profile: p.id });
+        },
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

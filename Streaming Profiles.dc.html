@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/fonts.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/colors.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/dark.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/typography.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/spacing.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/elevation.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/icons.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/tokens/base.css">
+<link rel="stylesheet" href="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/styles.css">
+<script src="_ds/lumana-lumix-cloud-design-system-git-1b2e75e8-6731-4899-a6b5-0c0f64d44f4b/_ds_bundle.js"></script>
+<style>html,body{height:100%;margin:0;background:#101828}a{color:#9bacf2;text-decoration:none}a:hover{color:#6575bf}input[type=number]::-webkit-inner-spin-button{opacity:.4}input::placeholder{color:var(--color-text-subtlest)}</style>
+</helmet>
+<div class="dark-theme" style="display:flex;height:100vh;min-height:0;font-family:var(--font-sans);background:var(--color-elevation-surface-default);color:var(--color-text-default);font-size:14px;line-height:20px">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Sidebar" items="{{ navItems }}" value="database" logo-src="assets/logo-mark-alt.svg" hint-size="65px,100%"></x-import>
+<main style="flex:1;display:flex;flex-direction:column;min-width:0;min-height:0">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.HeaderBar" breadcrumbs="{{ crumbs }}" hint-size="100%,49px">
+<div style="display:flex;flex-shrink:0;gap:2px;padding:2px;border-radius:4px;background:var(--color-background-neutral-subtle)">
+<a href="index.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-subtle)" style-hover="color:var(--color-text-default)">Camera storage</a>
+<a href="Camera Live View.dc.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-subtle)" style-hover="color:var(--color-text-default)">Live view</a>
+<a href="Streaming Profiles.dc.html" style="display:flex;align-items:center;flex-shrink:0;white-space:nowrap;height:28px;padding:0 12px;border-radius:4px;font-size:12px;font-weight:500;color:var(--color-text-default);background:var(--color-background-neutral-subtle-100700);box-shadow:var(--shadow-sm)">Streaming profiles</a>
+</div>
+</x-import>
+<div style="flex:1;min-height:0;display:flex;position:relative;overflow:hidden">
+
+<nav data-screen-label="Organization database menu" style="width:240px;min-width:240px;border-right:1px solid var(--color-border-default);padding:16px 8px;display:flex;flex-direction:column;gap:2px;overflow-y:auto;background:var(--color-elevation-surface-subtlest)">
+<sc-for list="{{ menu }}" as="m" hint-placeholder-count="14">
+<div style="display:flex;align-items:center;gap:8px;min-height:40px;padding:0 12px;padding-inline-start:{{ m.pad }};border-radius:4px;cursor:pointer;font-size:14px;font-weight:{{ m.w }};color:{{ m.c }};background:{{ m.bg }}" style-hover="background:var(--color-background-neutral-subtle)">
+<span class="{{ m.chev }}" style="width:12px;font-size:12px;color:var(--icon-default-no-bg);transform:{{ m.rot }}"></span>
+<span class="{{ m.icon }}" style="font-size:16px;color:{{ m.ic }}"></span>
+<span>{{ m.label }}</span>
+</div>
+</sc-for>
+</nav>
+
+<div data-screen-label="Streaming profiles" style="flex:1;min-width:0;display:flex;flex-direction:column;gap:16px;padding:24px 32px">
+<div style="display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
+<div style="display:flex;align-items:center;gap:8px;width:320px;max-width:100%;height:40px;padding:0 12px;box-sizing:border-box;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default)">
+<span class="ui-icon-search" style="font-size:16px;color:var(--icon-default-no-bg)"></span>
+<input value="{{ q }}" onChange="{{ onSearch }}" placeholder="Search streaming profile" style="flex:1;min-width:0;border:0;outline:none;background:transparent;color:var(--color-text-default);font:inherit;font-size:14px">
+</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Create profile" type="default" onClick="{{ onCreate }}" hint-size="130px,40px"></x-import>
+</div>
+
+<div style="flex:1;min-height:0;display:flex;flex-direction:column;border:1px solid var(--color-border-default);border-radius:4px;overflow:hidden">
+<div style="display:grid;grid-template-columns:minmax(0,2fr) repeat(4,minmax(0,1fr)) 80px;align-items:center;height:48px;padding:0 16px;gap:16px;background:var(--color-elevation-surface-subtle);border-bottom:1px solid var(--color-border-default);font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">
+<div>Name</div><div>Codec</div><div>Resolution</div><div>Bitrate</div><div>FPS</div><div></div>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto">
+<sc-for list="{{ rows }}" as="r" hint-placeholder-count="6">
+<div onClick="{{ r.open }}" onMouseEnter="{{ r.enter }}" onMouseLeave="{{ leave }}" style="display:grid;grid-template-columns:minmax(0,2fr) repeat(4,minmax(0,1fr)) 80px;align-items:center;min-height:46px;padding:0 16px;gap:16px;cursor:pointer;border-bottom:1px solid var(--color-border-default);background:{{ r.bg }}">
+<div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ r.name }}</div>
+<div>{{ r.codecL }}</div>
+<div>{{ r.resL }}</div>
+<div style="white-space:nowrap">{{ r.bitrateL }}</div>
+<div>{{ r.fps }}</div>
+<div style="display:flex;justify-content:flex-end;gap:16px;opacity:{{ r.actOp }}">
+<span class="ui-icon-edit" title="Edit" style="font-size:16px;color:var(--icon-default-no-bg)"></span>
+<span class="ui-icon-delete" title="Delete" onClick="{{ r.del }}" style="font-size:16px;color:var(--icon-default-no-bg)"></span>
+</div>
+</div>
+</sc-for>
+<sc-if value="{{ empty }}" hint-placeholder-val="{{ false }}">
+<div style="padding:48px 16px;text-align:center;color:var(--color-text-subtle)">Try adjusting your search.</div>
+</sc-if>
+</div>
+</div>
+</div>
+
+<sc-if value="{{ drawerOpen }}" hint-placeholder-val="{{ false }}">
+<aside data-screen-label="Edit streaming profile drawer" style="position:absolute;top:0;right:0;bottom:0;z-index:10;width:480px;max-width:calc(100% - 120px);display:flex;flex-direction:column;background:var(--color-elevation-surface-default);border-left:1px solid var(--color-border-default);box-shadow:var(--shadow-md)">
+<div title="Close" onClick="{{ onClose }}" style="position:absolute;top:8px;left:-44px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--color-secondary-gray-600);color:var(--color-primary-white);transition:opacity .3s" style-hover="opacity:.85"><span class="ui-icon-close" style="font-size:16px"></span></div>
+<div style="display:flex;align-items:center;flex-shrink:0;height:49px;padding:0 24px;border-bottom:1px solid var(--color-border-default)">
+<span style="font-size:16px;line-height:24px;font-weight:500">{{ drawerTitle }}</span>
+</div>
+<div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Name</div>
+<input value="{{ d.name }}" onChange="{{ f.name }}" placeholder="Enter profile name" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Codec</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ d.codec }}" options="{{ codecOptions }}" onChange="{{ f.codec }}" style="width:100%" hint-size="100%,40px"></x-import>
+</div>
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Resolution</div>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ d.res }}" options="{{ resOptions }}" onChange="{{ f.res }}" style="width:100%" hint-size="100%,40px"></x-import>
+</div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Bitrate (kbps)</div>
+<input type="number" min="64" step="64" value="{{ d.bitrate }}" onChange="{{ f.bitrate }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+</div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px">
+<div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">FPS</div>
+<input type="number" min="1" max="60" step="1" value="{{ d.fps }}" onChange="{{ f.fps }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
+</div>
+</div>
+</div>
+<div style="display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;padding:16px 24px;border-top:1px solid var(--color-border-default)">
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Cancel" type="default" size="m" onClick="{{ onClose }}" hint-size="80px,40px"></x-import>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Save" type="primary" size="m" disabled="{{ invalid }}" onClick="{{ onSave }}" hint-size="80px,40px"></x-import>
+</div>
+</aside>
+</sc-if>
+
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const CODECS = [{ value: 'h264', label: 'H.264' }, { value: 'h265', label: 'H.265' }, { value: 'av1', label: 'AV1' }];
+const RES = ['native', '1080p', '720p', '480p', '360p', '240p'].map((v) => ({ value: v, label: v === 'native' ? 'Native' : v }));
+const lbl = (opts, v) => (opts.find((o) => o.value === v) || {}).label || '—';
+const SEED = [
+  { id: 1, name: 'High quality', codec: 'h265', res: 'native', bitrate: 4096, fps: 25 },
+  { id: 2, name: 'Balanced', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 },
+  { id: 3, name: 'Low bandwidth', codec: 'h264', res: '720p', bitrate: 1024, fps: 15 },
+  { id: 4, name: 'Remote site', codec: 'h264', res: '480p', bitrate: 512, fps: 10 },
+  { id: 5, name: 'Mobile', codec: 'h264', res: '360p', bitrate: 384, fps: 10 },
+  { id: 6, name: 'Archive efficient', codec: 'av1', res: '1080p', bitrate: 1536, fps: 15 },
+];
+const MENU = [
+  ['Person directory', 'ui-icon-user', 'open'], ['Persons', '', 'child'], ['Groups', '', 'child'],
+  ['Uniform directory', 'ui-icon-users'], ['Custom objects', 'ui-icon-custom-object'],
+  ['Doors directory', 'ui-icon-doors', 'closed'], ['Vehicles directory', 'ui-icon-object-vehicle', 'closed'],
+  ['Event tags', 'ui-icon-list-view'], ['Time schedule', 'ui-icon-calendar'], ['Streaming profiles', 'ui-icon-stream'],
+  ['Youtube', 'ui-icon-youtube'], ['Entrances', 'ui-icon-login-firewall'], ['Variables', 'ui-icon-terminal'],
+  ['Tags', 'ui-icon-tag'], ['Shelves', 'ui-icon-container'], ['Zones', 'ui-icon-zone-region'],
+  ['Map objects', 'ui-icon-map-object'], ['Webhooks', 'ui-icon-webhook'], ['Contacts', 'ui-icon-user', 'closed'],
+  ['Categories', 'ui-icon-category'], ['Files', 'ui-icon-file'],
+];
+class Component extends DCLogic {
+  state = { rows: SEED, q: '', edit: null, d: null, hover: null };
+  componentDidMount() {
+    this.onKey = (e) => { if (e.key === 'Escape') this.close(); };
+    window.addEventListener('keydown', this.onKey);
+  }
+  componentWillUnmount() { window.removeEventListener('keydown', this.onKey); }
+  open(r) { this.setState({ edit: r ? r.id : 'new', d: r ? { ...r } : { name: '', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 } }); }
+  close() { this.setState({ edit: null, d: null }); }
+  save() {
+    const { edit, d, rows } = this.state;
+    const row = { ...d, bitrate: Number(d.bitrate), fps: Number(d.fps) };
+    const next = edit === 'new' ? [...rows, { ...row, id: Date.now() }] : rows.map((r) => (r.id === edit ? row : r));
+    this.setState({ rows: next, edit: null, d: null });
+  }
+  renderVals() {
+    const { rows, q, edit, d, hover } = this.state;
+    const set = (k, num) => (e) => { const v = e && e.target ? e.target.value : e; this.setState((s) => ({ d: { ...s.d, [k]: v } })); };
+    const list = rows.filter((r) => r.name.toLowerCase().includes(q.trim().toLowerCase()));
+    const valid = d && d.name.trim() && Number(d.bitrate) > 0 && Number(d.fps) > 0;
+    return {
+      navItems: [
+        { value: 'devices', label: 'Devices', icon: 'ui-icon-camera-sidebar' },
+        { value: 'search', label: 'Search', icon: 'ui-icon-search-sidebar' },
+        { value: 'alerts', label: 'Alerts', icon: 'ui-icon-notifications-sidebar' },
+        { value: 'dashboards', label: 'Dashboards', icon: 'ui-icon-dashboard-sidebar' },
+        { value: 'walls', label: 'Walls', icon: 'ui-icon-wall-sidebar' },
+        { value: 'archives', label: 'Archives', icon: 'ui-icon-archive-sidebar' },
+        { value: 'cases', label: 'Cases', icon: 'ui-icon-menu-folder-sidebar' },
+      ],
+      crumbs: ['Organization database', 'Streaming profiles'],
+      menu: MENU.map(([label, icon, kind]) => {
+        const a = label === 'Streaming profiles';
+        return {
+          label, icon, w: a ? 500 : 400,
+          chev: kind === 'open' || kind === 'closed' ? 'ui-icon-expand-arrow' : '',
+          rot: kind === 'closed' ? 'rotate(-90deg)' : 'none',
+          pad: kind === 'child' ? '48px' : '8px',
+          c: a ? 'var(--color-icon-selected)' : 'var(--color-text-default)',
+          ic: a ? 'var(--color-icon-selected)' : 'var(--icon-default-no-bg)',
+          bg: a ? 'var(--color-background-accent-primary-subtlest)' : 'transparent',
+        };
+      }),
+      q, onSearch: (e) => this.setState({ q: e.target.value }),
+      onCreate: () => this.open(null),
+      leave: () => this.setState({ hover: null }),
+      empty: list.length === 0,
+      rows: list.map((r) => ({
+        ...r, codecL: lbl(CODECS, r.codec), resL: lbl(RES, r.res), bitrateL: `${r.bitrate} kbps`,
+        bg: edit === r.id ? 'var(--color-background-accent-primary-subtlest)' : hover === r.id ? 'var(--color-background-neutral-subtle)' : 'transparent',
+        actOp: hover === r.id ? 1 : 0,
+        open: () => this.open(r), enter: () => this.setState({ hover: r.id }),
+        del: (e) => { e.stopPropagation(); this.setState((s) => ({ rows: s.rows.filter((x) => x.id !== r.id), edit: s.edit === r.id ? null : s.edit })); },
+      })),
+      drawerOpen: !!d, drawerTitle: edit === 'new' ? 'Create streaming profile' : 'Edit streaming profile',
+      d: d || {}, codecOptions: CODECS, resOptions: RES,
+      f: { name: set('name'), codec: set('codec'), res: set('res'), bitrate: set('bitrate'), fps: set('fps') },
+      invalid: !valid, onClose: () => this.close(), onSave: () => this.save(),
+    };
+  }
+}
+</script>
+</body>
+</html>
