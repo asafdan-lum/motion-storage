@@ -98,6 +98,7 @@
 <div style="padding:0 8px 8px">
 <input value="{{ pf.q }}" onChange="{{ pf.search }}" placeholder="Search streaming profiles..." style="width:100%;height:36px;padding:0 12px;box-sizing:border-box;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-elevation-surface-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)">
 </div>
+<sc-if value="{{ pf.cbrOnly }}" hint-placeholder-val="{{ false }}"><div style="padding:0 16px 8px;font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ pf.cbrNote }}</div></sc-if>
 <div style="max-height:220px;overflow-y:auto;display:flex;flex-direction:column">
 <sc-for list="{{ pf.items }}" as="o" hint-placeholder-count="4">
 <div onClick="{{ o.pick }}" style="display:flex;flex-direction:column;padding:8px 16px;cursor:pointer;background:{{ o.bg }}" style-hover="background:var(--color-background-neutral-subtle-100700)">
@@ -309,15 +310,52 @@
 <sc-if value="{{ nd.open }}" hint-placeholder-val="{{ false }}">
 <aside data-screen-label="Create streaming profile drawer" style="position:fixed;top:0;right:0;bottom:0;z-index:30;width:480px;max-width:calc(100% - 120px);display:flex;flex-direction:column;background:var(--color-elevation-surface-default);border-left:1px solid var(--color-border-default);box-shadow:var(--shadow-md)">
 <div title="Close" onClick="{{ nd.close }}" style="position:absolute;top:8px;left:-44px;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--color-secondary-gray-600);color:var(--color-primary-white);transition:opacity .3s" style-hover="opacity:.85"><span class="ui-icon-close" style="font-size:16px"></span></div>
+<div title="Drag to resize" onMouseDown="{{ startResize }}" style="position:absolute;top:50%;left:-35px;width:14px;height:40px;margin-top:-20px;box-sizing:border-box;border-radius:7px;background:var(--color-secondary-gray-600);display:flex;align-items:center;justify-content:center;gap:2px;cursor:col-resize;z-index:1;transition:opacity .3s" style-hover="opacity:.85">
+<div style="width:2px;height:16px;border-radius:1px;background:var(--color-primary-white)"></div>
+<div style="width:2px;height:16px;border-radius:1px;background:var(--color-primary-white)"></div>
+</div>
 <div style="display:flex;align-items:center;flex-shrink:0;height:49px;padding:0 24px;border-bottom:1px solid var(--color-border-default)"><span style="font-size:16px;line-height:24px;font-weight:500">Create streaming profile</span></div>
 <div style="flex:1;min-height:0;overflow-y:auto;padding:24px;display:flex;flex-direction:column;gap:24px">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;align-items:center;gap:4px;font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)"><span>Profile type</span>
+<span onMouseEnter="{{ ptip.show }}" onMouseLeave="{{ ptip.hide }}" style="position:relative;display:flex;cursor:help">
+<span class="ui-icon-info" style="font-size:16px;color:var(--icon-default-no-bg)"></span>
+<sc-if value="{{ ptip.open }}" hint-placeholder-val="{{ false }}">
+<div style="position:absolute;top:24px;left:-12px;z-index:40;width:320px;display:flex;flex-direction:column;gap:8px;padding:12px 16px;border:1px solid var(--color-border-default);border-radius:4px;background:var(--color-elevation-surface-subtle);box-shadow:var(--shadow-md);font-size:12px;line-height:18px;font-weight:400;color:var(--color-text-default);cursor:default">
+<div><span style="font-weight:500">CBR (constant bitrate)</span> streams at a fixed bitrate, so bandwidth and storage use are predictable. Used for local live view, remote live view and storage.</div>
+<div><span style="font-weight:500">VBR (variable bitrate)</span> adjusts the bitrate between a min and max based on scene activity, which saves bandwidth on static scenes. Used for remote live view only.</div>
+</div>
+</sc-if>
+</span></div>
+<div style="display:flex;align-self:flex-start;gap:2px;padding:3px;border-radius:999px;background:var(--color-background-neutral-subtle)">
+<sc-for list="{{ nd.typeOpts }}" as="t" hint-placeholder-count="2">
+<div onClick="{{ t.pick }}" style="display:flex;align-items:center;justify-content:center;min-width:64px;height:28px;padding:0 16px;border-radius:999px;font-size:14px;font-weight:500;transition:background .3s;cursor:{{ t.cur }};opacity:{{ t.op }};background:{{ t.bg }};color:{{ t.c }};box-shadow:{{ t.sh }}">{{ t.label }}</div>
+</sc-for>
+</div>
+<sc-if value="{{ nd.locked }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ nd.lockNote }}</div></sc-if>
+</div>
 <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Name</div><input value="{{ nd.d.name }}" onChange="{{ nd.f.name }}" placeholder="Enter profile name" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
 <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Codec</div><x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ nd.d.codec }}" options="{{ codecOptions }}" onChange="{{ nd.f.codec }}" style="width:100%" hint-size="100%,40px"></x-import></div>
 <div style="display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Resolution</div><x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Select" value="{{ nd.d.res }}" options="{{ resOptions }}" onChange="{{ nd.f.res }}" style="width:100%" hint-size="100%,40px"></x-import></div>
+<sc-if value="{{ nd.isCbr }}" hint-placeholder-val="{{ true }}">
 <div style="display:flex;gap:16px">
 <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Bitrate (kbps)</div><input type="number" min="64" step="64" value="{{ nd.d.bitrate }}" onChange="{{ nd.f.bitrate }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
 <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">FPS</div><input type="number" min="1" max="60" step="1" value="{{ nd.d.fps }}" onChange="{{ nd.f.fps }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
 </div>
+</sc-if>
+<sc-if value="{{ nd.isVbr }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;flex-direction:column;gap:8px">
+<div style="display:flex;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Min bitrate (kbps)</div><input type="number" min="64" step="64" value="{{ nd.d.minBitrate }}" onChange="{{ nd.f.minBitrate }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">Max bitrate (kbps)</div><input type="number" min="64" step="64" value="{{ nd.d.maxBitrate }}" onChange="{{ nd.f.maxBitrate }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+</div>
+<sc-if value="{{ nd.err }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;line-height:16px;color:var(--color-text-error-default)">Max bitrate must be greater than min bitrate</div></sc-if>
+</div>
+<div style="display:flex;gap:16px">
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px"><div style="font-size:12px;line-height:20px;font-weight:500;color:var(--color-text-subtle)">FPS</div><input type="number" min="1" max="60" step="1" value="{{ nd.d.fps }}" onChange="{{ nd.f.fps }}" style="width:100%;height:40px;padding:8px 16px;border:1px solid var(--color-border-input-default);border-radius:4px;background:var(--color-background-input-default);color:var(--color-text-default);font:inherit;font-size:14px;outline:none;box-sizing:border-box" style-focus="box-shadow:inset 0 0 0 2px var(--color-border-input-pressed)"></div>
+<div style="flex:1;min-width:0"></div>
+</div>
+</sc-if>
 </div>
 <div style="display:flex;justify-content:flex-end;gap:8px;flex-shrink:0;padding:16px 24px;border-top:1px solid var(--color-border-default)">
 <x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Button" text="Cancel" type="default" size="m" onClick="{{ nd.close }}" hint-size="80px,40px"></x-import>
@@ -329,14 +367,23 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;motionOnly&quot;,&quot;internalOnly&quot;,&quot;externalOnly&quot;,&quot;none&quot;,&quot;encoding&quot;,&quot;smartEmpty&quot;,&quot;notMet&quot;,&quot;newCamera&quot;,&quot;highLoad&quot;,&quot;dialogReduce&quot;,&quot;dialogSave&quot;]}}">
 const PROFILES = [
-  { id: 1, name: 'High quality', codec: 'h265', res: 'native', bitrate: 4096, fps: 25 },
-  { id: 2, name: 'Balanced', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 },
-  { id: 3, name: 'Low bandwidth', codec: 'h264', res: '720p', bitrate: 1024, fps: 15 },
-  { id: 4, name: 'Remote site', codec: 'h264', res: '480p', bitrate: 512, fps: 10 },
-  { id: 5, name: 'Mobile', codec: 'h264', res: '360p', bitrate: 384, fps: 10 },
-  { id: 6, name: 'Archive efficient', codec: 'av1', res: '1080p', bitrate: 1536, fps: 15 },
-  { id: 7, name: 'AV1 native', codec: 'av1', res: 'native', bitrate: 4096, fps: 25 },
+  { id: 1, name: 'High quality', type: 'cbr', codec: 'h265', res: 'native', bitrate: 4096, fps: 25 },
+  { id: 2, name: 'Balanced', type: 'cbr', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 },
+  { id: 3, name: 'Low bandwidth', type: 'cbr', codec: 'h264', res: '720p', bitrate: 1024, fps: 15 },
+  { id: 4, name: 'Remote site', type: 'vbr', codec: 'h264', res: '480p', minBitrate: 256, maxBitrate: 768, fps: 10 },
+  { id: 5, name: 'Mobile', type: 'vbr', codec: 'h264', res: '360p', minBitrate: 192, maxBitrate: 512, fps: 10 },
+  { id: 6, name: 'Archive efficient', type: 'cbr', codec: 'av1', res: '1080p', bitrate: 1536, fps: 15 },
+  { id: 7, name: 'AV1 native', type: 'cbr', codec: 'av1', res: 'native', bitrate: 4096, fps: 25 },
 ];
+
+const TYPES = [{ value: 'cbr', label: 'CBR' }, { value: 'vbr', label: 'VBR' }];
+const kbps = (p) => (p.type === 'vbr' ? `${Number(p.minBitrate).toLocaleString()}–${Number(p.maxBitrate).toLocaleString()} kbps` : `${Number(p.bitrate).toLocaleString()} kbps`);
+const typeOpts = (cur, set, locked) => TYPES.map((t) => { const a = cur === t.value, dis = locked && t.value !== 'cbr';
+  return { label: t.label, pick: () => { if (!dis) set(t.value); }, bg: a ? 'var(--color-background-button-primary-default)' : 'transparent', c: a ? 'var(--color-primary-white)' : 'var(--color-text-default)', sh: 'none', op: dis ? 0.32 : 1, cur: dis ? 'default' : 'pointer' }; });
+const vbrErr = (d) => !!d && d.type === 'vbr' && Number(d.minBitrate) > 0 && Number(d.maxBitrate) > 0 && Number(d.maxBitrate) <= Number(d.minBitrate);
+const okP = (d) => !!(d && d.name.trim() && Number(d.fps) > 0 && (d.type === 'vbr' ? Number(d.minBitrate) > 0 && !vbrErr(d) && Number(d.maxBitrate) > 0 : Number(d.bitrate) > 0));
+const norm = (d) => ({ ...d, name: d.name.trim(), bitrate: Number(d.bitrate), minBitrate: Number(d.minBitrate), maxBitrate: Number(d.maxBitrate), fps: Number(d.fps) });
+const NEWP = { type: 'cbr', codec: 'h265', res: '1080p', bitrate: 2048, minBitrate: 1024, maxBitrate: 4096, fps: 15 };
 const DETECTED = {
   main: { codec: 'H.265', res: '2560×1440', kbps: 4096 },
   sub: { codec: 'H.264', res: '640×360', kbps: 512 },
@@ -368,7 +415,7 @@ const SCENARIOS = {
 const TIERS = ['general', 'motion', 'int', 'ext'];
 
 class Component extends DCLogic {
-  state = { ...this.preset(this.props.scenario || 'default'), profiles: PROFILES, pfOpen: false, pfQ: '', nd: null };
+  state = { ...this.preset(this.props.scenario || 'default'), profiles: PROFILES, pfOpen: false, pfQ: '', nd: null, tipOpen: false };
   pfRef = React.createRef();
   componentDidMount() {
     this.onDoc = (e) => { if (this.state.pfOpen && this.pfRef.current && !this.pfRef.current.contains(e.target)) this.setState({ pfOpen: false }); };
@@ -379,29 +426,31 @@ class Component extends DCLogic {
   pickProfile(p) { this.setState({ profile: p.id, codec: p.codec, res: p.res, bitrate: String(p.bitrate), pfOpen: false, pfQ: '' }); }
   profileVals() {
     const st = this.state, codecL = { h264: 'H.264', h265: 'H.265', av1: 'AV1' }, resL = (r) => (r === 'native' ? 'Native' : r);
-    const meta = (p) => `${codecL[p.codec]} · ${resL(p.res)} · ${p.bitrate.toLocaleString()} kbps · ${p.fps} fps`;
+    const meta = (p) => `${p.type.toUpperCase()} · ${codecL[p.codec]} · ${resL(p.res)} · ${kbps(p)} · ${p.fps} fps`;
     const sel = st.profiles.find((p) => p.id === st.profile);
-    const items = st.profiles.filter((p) => p.name.toLowerCase().includes(st.pfQ.trim().toLowerCase()));
+    const items = st.profiles.filter((p) => p.type === 'cbr' && p.name.toLowerCase().includes(st.pfQ.trim().toLowerCase()));
     const d = st.nd;
     const setD = (k) => (e) => { const v = e && e.target ? e.target.value : e; this.setState((s) => ({ nd: { ...s.nd, [k]: v } })); };
     return {
+      ptip: { open: st.tipOpen, show: () => this.setState({ tipOpen: true }), hide: () => this.setState({ tipOpen: false }) },
       pf: {
         ref: this.pfRef, open: st.pfOpen, q: st.pfQ,
         label: sel ? sel.name : 'Select streaming profile', labelColor: sel ? 'var(--color-text-default)' : 'var(--color-text-subtle)',
         summary: sel ? meta(sel) : 'Choose a profile from the organization database',
         border: st.pfOpen ? 'var(--color-border-input-pressed)' : 'var(--color-border-input-default)', chev: st.pfOpen ? 'rotate(180deg)' : 'none',
         toggle: () => this.setState((s) => ({ pfOpen: !s.pfOpen })),
-        search: (e) => this.setState({ pfQ: e.target.value }), none: items.length === 0,
+        search: (e) => this.setState({ pfQ: e.target.value }), none: items.length === 0, cbrOnly: true, cbrNote: 'Storage supports CBR profiles only',
         items: items.map((p) => ({ name: p.name, meta: meta(p), pick: () => this.pickProfile(p),
           bg: p.id === st.profile ? 'var(--color-background-neutral-subtle-100700)' : 'transparent',
           c: p.id === st.profile ? 'var(--color-icon-selected)' : 'var(--color-text-default)' })),
-        create: () => this.setState({ pfOpen: false, nd: { name: st.pfQ.trim(), codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 } }),
+        create: () => this.setState({ pfOpen: false, nd: { ...NEWP, name: st.pfQ.trim() } }),
       },
       nd: {
-        open: !!d, d: d || {}, f: { name: setD('name'), codec: setD('codec'), res: setD('res'), bitrate: setD('bitrate'), fps: setD('fps') },
-        invalid: !(d && d.name.trim() && Number(d.bitrate) > 0 && Number(d.fps) > 0),
+        open: !!d, d: d || {}, f: { name: setD('name'), codec: setD('codec'), res: setD('res'), bitrate: setD('bitrate'), minBitrate: setD('minBitrate'), maxBitrate: setD('maxBitrate'), fps: setD('fps') },
+        typeOpts: typeOpts('cbr', setD('type'), true), isCbr: true, isVbr: false, err: false, locked: true, lockNote: 'Storage supports CBR profiles only',
+        invalid: !okP(d),
         close: () => this.setState({ nd: null }),
-        save: () => { const p = { ...d, name: d.name.trim(), bitrate: Number(d.bitrate), fps: Number(d.fps), id: Date.now() };
+        save: () => { const p = { ...norm(d), type: 'cbr', id: Date.now() };
           this.setState((s) => ({ profiles: [...s.profiles, p], nd: null })); this.pickProfile(p); },
       },
     };
@@ -480,6 +529,16 @@ class Component extends DCLogic {
   }
 
   eff(o) { return { ...o, intOn: o.eventsOn && o.intOn, extOn: o.eventsOn && o.extOn }; }
+
+  startResize(e) {
+    e.preventDefault();
+    const el = e.currentTarget.parentElement; if (!el) return;
+    const right = el.getBoundingClientRect().right, max = window.innerWidth - 120;
+    const move = (ev) => { el.style.width = Math.max(400, Math.min(max, right - ev.clientX)) + 'px'; };
+    const end = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', end); document.body.style.cursor = ''; document.body.style.userSelect = ''; };
+    document.body.style.cursor = 'col-resize'; document.body.style.userSelect = 'none';
+    window.addEventListener('mousemove', move); window.addEventListener('mouseup', end);
+  }
   renderVals() {
     const raw = this.state, s = this.eff(raw), c = this.calc(s), err = this.validate(s, c), self = this;
     const R = React.createElement, NS = window.LumanaDesignSystem_1b2e75 || {}, B = NS.Button;
@@ -533,7 +592,7 @@ class Component extends DCLogic {
       R(B, { key: 's', text: 'Save anyway', type: 'primary', onClick: () => this.commit() })) : null;
 
     return {
-      s, raw, on, footerReduce, footerSave, ...this.profileVals(),
+      s, raw, on, footerReduce, footerSave, ...this.profileVals(), startResize: (e) => this.startResize(e),
       generalOptions: ['30', '60', '90', '365'].map((d) => ({ value: d, label: `${d} days` })),
       retentionOptions: [{ value: 'none', label: 'None' }, ...['30', '60', '90', '365'].map((d) => ({ value: d, label: `${d} days` }))],
       crumbs: ['Devices', 'Warehouse 3', 'Dock 4 — East', 'Storage'],
