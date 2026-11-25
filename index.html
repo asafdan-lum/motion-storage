@@ -57,18 +57,37 @@
 
 <section data-screen-label="Recording stream" style="display:flex;flex-direction:column;gap:16px">
 <div style="display:flex;flex-direction:column;gap:4px">
-<h4 style="margin:0;font-size:16px;line-height:24px;font-weight:600">Recording stream</h4>
+<div style="display:flex;align-items:center;gap:12px">
+<h4 style="flex:1;margin:0;font-size:16px;line-height:24px;font-weight:600">Recording stream</h4>
+<div title="Prototype only: simulate a camera with or without a sub stream" style="display:flex;align-items:center;gap:8px;padding:2px 8px 2px 2px;border:1px dashed var(--color-violet-500);border-radius:4px;font-size:12px;line-height:20px;color:var(--color-text-accent-violet)">
+<span style="display:flex;align-items:center;height:20px;padding:0 6px;border-radius:2px;background:var(--color-violet-500);color:var(--color-primary-white);font-size:10px;line-height:16px;font-weight:600;letter-spacing:.04em">SCENARIO</span>
+<span>Sub stream detected</span>
+<x-import component-from-global-scope="LumanaDesignSystem_1b2e75.Toggle" value="{{ s.hasSub }}" onChange="{{ on.hasSub }}" hint-size="34px,24px"></x-import>
+</div>
+</div>
 <div style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">One setting for all retention types: General, Motion and Events</div>
 </div>
 <div style="display:flex;flex-direction:column;gap:12px">
 <sc-for list="{{ streams }}" as="o" hint-placeholder-count="2">
-<div onClick="{{ o.pick }}" style="display:flex;align-items:flex-start;gap:8px;cursor:pointer">
-<span style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;min-width:20px;margin-top:2px;border-radius:50%;border:2px solid {{ o.ring }};background:{{ o.fill }};box-sizing:border-box">
+<div onClick="{{ o.pick }}" style="display:flex;align-items:flex-start;gap:8px;cursor:{{ o.cur }}">
+<span style="display:flex;align-items:center;justify-content:center;width:20px;height:20px;min-width:20px;margin-top:2px;border-radius:50%;border:2px solid {{ o.ring }};background:{{ o.fill }};box-sizing:border-box;opacity:{{ o.op }}">
 <sc-if value="{{ o.sel }}" hint-placeholder-val="{{ false }}"><span style="width:8px;height:8px;border-radius:50%;background:var(--color-elevation-surface-default)"></span></sc-if>
 </span>
-<div style="display:flex;flex-direction:column;gap:4px">
-<div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:4px 12px"><span style="font-size:14px;font-weight:600">{{ o.label }}</span><span style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ o.info }}</span></div>
+<div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+<div style="display:flex;flex-direction:column;gap:4px;opacity:{{ o.op }}">
+<span style="font-size:14px;font-weight:600">{{ o.label }}</span>
 <span style="font-size:12px;line-height:16px;color:var(--color-text-subtle)">{{ o.desc }}</span>
+</div>
+<sc-if value="{{ o.avail }}" hint-placeholder-val="{{ true }}">
+<div style="display:flex;flex-wrap:wrap;gap:4px 16px;margin-top:2px;font-size:12px;line-height:16px">
+<sc-for list="{{ o.attrs }}" as="a" hint-placeholder-count="4">
+<div style="display:flex;gap:4px"><span style="color:var(--color-text-subtle)">{{ a.k }}</span><span style="color:var(--color-text-default)">{{ a.v }}</span></div>
+</sc-for>
+</div>
+</sc-if>
+<sc-if value="{{ o.missing }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;line-height:16px;color:var(--color-text-subtle)"><span class="ui-icon-info" style="font-size:14px;color:var(--color-icon-default)"></span>Not detected on this camera</div>
+</sc-if>
 </div>
 </div>
 </sc-for>
@@ -366,7 +385,7 @@
 </sc-if>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;motionOnly&quot;,&quot;internalOnly&quot;,&quot;externalOnly&quot;,&quot;none&quot;,&quot;encoding&quot;,&quot;smartEmpty&quot;,&quot;notMet&quot;,&quot;newCamera&quot;,&quot;highLoad&quot;,&quot;dialogReduce&quot;,&quot;dialogSave&quot;]}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;scenario&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;default&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Prototype state&quot;,&quot;options&quot;:[&quot;default&quot;,&quot;motionOnly&quot;,&quot;internalOnly&quot;,&quot;externalOnly&quot;,&quot;none&quot;,&quot;encoding&quot;,&quot;smartEmpty&quot;,&quot;notMet&quot;,&quot;newCamera&quot;,&quot;mainOnly&quot;,&quot;newCameraMainOnly&quot;,&quot;highLoad&quot;,&quot;dialogReduce&quot;,&quot;dialogSave&quot;]}}">
 const PROFILES = [
   { id: 1, name: 'High quality', type: 'cbr', codec: 'h265', res: 'native', bitrate: 4096, fps: 25 },
   { id: 2, name: 'Balanced', type: 'cbr', codec: 'h265', res: '1080p', bitrate: 2048, fps: 15 },
@@ -375,7 +394,9 @@ const PROFILES = [
   { id: 5, name: 'Mobile', type: 'vbr', codec: 'h264', res: '360p', minBitrate: 192, maxBitrate: 512, fps: 10 },
   { id: 6, name: 'Archive efficient', type: 'cbr', codec: 'av1', res: '1080p', bitrate: 1536, fps: 15 },
   { id: 7, name: 'AV1 native', type: 'cbr', codec: 'av1', res: 'native', bitrate: 4096, fps: 25 },
+  { id: 8, name: 'Recommended storage profile', type: 'cbr', codec: 'h265', res: '720p', bitrate: 700, fps: 25 },
 ];
+const REC = PROFILES.find((p) => p.id === 8);
 
 const TYPES = [{ value: 'cbr', label: 'CBR' }, { value: 'vbr', label: 'VBR' }];
 const kbps = (p) => (p.type === 'vbr' ? `${Number(p.minBitrate).toLocaleString()}–${Number(p.maxBitrate).toLocaleString()} kbps` : `${Number(p.bitrate).toLocaleString()} kbps`);
@@ -386,8 +407,8 @@ const okP = (d) => !!(d && d.name.trim() && Number(d.fps) > 0 && (d.type === 'vb
 const norm = (d) => ({ ...d, name: d.name.trim(), bitrate: Number(d.bitrate), minBitrate: Number(d.minBitrate), maxBitrate: Number(d.maxBitrate), fps: Number(d.fps) });
 const NEWP = { type: 'cbr', codec: 'h265', res: '1080p', bitrate: 2048, minBitrate: 1024, maxBitrate: 4096, fps: 15 };
 const DETECTED = {
-  main: { codec: 'H.265', res: '2560×1440', kbps: 4096 },
-  sub: { codec: 'H.264', res: '640×360', kbps: 512 },
+  main: { codec: 'H.265', res: '2560×1440', kbps: 4096, fps: 25 },
+  sub: { codec: 'H.264', res: '640×360', kbps: 512, fps: 15 },
 };
 const OTHERS = [
   { name: 'Lobby', days: 30 }, { name: 'Parking entrance', days: 45 }, { name: 'Loading dock 2', days: 30 },
@@ -396,7 +417,7 @@ const OTHERS = [
 const BASE = {
   storage: true, schedule: 'all', stream: 'sub', encoding: false, profile: null, codec: 'h265', res: 'native', bitrate: '512',
   general: '30', motionOn: true, motion: '60', threshold: '20', intOn: true, intDays: '90', extOn: true, extDays: '90',
-  eventsOn: true, pre: '10', post: '5', smart: true, smartEmpty: false, backup: false, newCam: false,
+  eventsOn: true, pre: '10', post: '5', smart: true, smartEmpty: false, backup: false, newCam: false, hasSub: true,
   coreCapTB: 25, coreBaseLoad: 45, dialog: null, tip: false, toast: false,
 };
 const SCENARIOS = {
@@ -409,6 +430,8 @@ const SCENARIOS = {
   smartEmpty: { smartEmpty: true },
   notMet: { coreCapTB: 18 },
   newCamera: { newCam: true, smartEmpty: true },
+  mainOnly: { hasSub: false },
+  newCameraMainOnly: { newCam: true, smartEmpty: true, hasSub: false },
   highLoad: { encoding: true, profile: 7, codec: 'av1', res: 'native', bitrate: '4096', coreBaseLoad: 72 },
   dialogReduce: { __current: { motion: '30', extOn: false }, dialog: 'reduce' },
   dialogSave: { coreCapTB: 18, encoding: true, profile: 7, codec: 'av1', res: 'native', bitrate: '4096', coreBaseLoad: 72, dialog: 'save' },
@@ -461,6 +484,11 @@ class Component extends DCLogic {
     const sc = SCENARIOS[name] || {};
     const { __current, ...rest } = sc;
     const st = { ...BASE, ...rest };
+    if (!st.hasSub) {
+      st.stream = 'main';
+      if (!rest.encoding && !rest.profile) st.bitrate = String(DETECTED.main.kbps);
+      if (st.newCam) Object.assign(st, { encoding: true, profile: REC.id, codec: REC.codec, res: REC.res, bitrate: String(REC.bitrate) });
+    }
     this.saved = { ...st };
     return { ...st, ...(__current || {}) };
   }
@@ -551,6 +579,12 @@ class Component extends DCLogic {
       bitrate: set('bitrate', ev), general: set('general'), motion: (x) => this.setState(x === 'none' ? { motionOn: false } : { motionOn: true, motion: x }),
       events: (x) => this.setState(x === 'none' ? { eventsOn: false } : { eventsOn: true, intDays: x, extDays: x }),
       threshold: set('threshold', ev), intOn: set('intOn'), intDays: (e) => this.setState({ intDays: e.target.value, extDays: e.target.value }), extOn: set('extOn'),
+      hasSub: (x) => this.setState((st) => {
+        if (x) return { hasSub: true };
+        const n = { hasSub: false, stream: 'main' };
+        Object.assign(n, { newCam: true, smartEmpty: true, encoding: true, profile: REC.id, codec: REC.codec, res: REC.res, bitrate: String(REC.bitrate) });
+        return n;
+      }),
       pre: set('pre', ev), post: set('post', ev), smart: set('smart'), backup: set('backup'),
       resetEnc: () => this.setState({ codec: 'h265', res: 'native', bitrate: String(DETECTED[s.stream].kbps) }),
       tipOn: () => this.setState({ tip: true }), tipOff: () => this.setState({ tip: false }),
@@ -621,10 +655,12 @@ class Component extends DCLogic {
         const d = DETECTED[o.v];
         const resLbl = { native: 'Native', '1080p': '1080p', '720p': '720p', '480p': '480p', '360p': '360p', '240p': '240p' }[s.res];
         const codecLbl = { h264: 'H.264', h265: 'H.265', av1: 'AV1' }[s.codec];
-        const info = sel && !s.encoding ? `Detected: ${d.codec} · ${d.res} · ${d.kbps.toLocaleString()} kbps avg` : '';
+        const avail = o.v === 'main' || s.hasSub;
+        const attrs = [{ k: 'Codec', v: d.codec }, { k: 'Resolution', v: d.res }, { k: 'Avg. bitrate', v: `${d.kbps.toLocaleString()} kbps` }, { k: 'FPS', v: String(d.fps) }];
         if (sel) this._encInfo = s.encoding ? `${codecLbl} · ${s.res === 'native' ? d.res : resLbl} · ${(parseInt(s.bitrate) || 0).toLocaleString()} kbps` : '';
-        return { ...o, sel, info, ring: sel ? 'var(--color-border-button-primary-default)' : 'var(--color-border-input-default)', fill: sel ? 'var(--color-background-selected-selector-active)' : 'transparent',
-          pick: () => this.setState(raw.profile ? { stream: o.v } : { stream: o.v, bitrate: String(DETECTED[o.v].kbps) }) };
+        return { ...o, sel, avail, missing: !avail, attrs, op: avail ? 1 : 0.32, cur: avail ? 'pointer' : 'default',
+          ring: sel ? 'var(--color-border-button-primary-default)' : 'var(--color-border-input-default)', fill: sel ? 'var(--color-background-selected-selector-active)' : 'transparent',
+          pick: () => { if (!avail) return; this.setState(raw.profile ? { stream: o.v } : { stream: o.v, bitrate: String(DETECTED[o.v].kbps) }); } };
       }),
       v: {
         invalid: Object.keys(err).length > 0,
